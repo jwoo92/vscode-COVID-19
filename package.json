@@ -1,0 +1,58 @@
+{
+	"name": "covid-19",
+	"displayName": "COVID-19 Tracker",
+	"description": "COVID-19 Tracker for Visual Studio Code.",
+	"publisher": "Woodward-Labs",
+	"icon": "logo.png",
+	"version": "0.0.1",
+	"homepage": "https://github.com/jwoo92/vscode-COVID-19",
+	"bugs": {
+		"url": "https://github.com/jwoo92/vscode-COVID-19/issues"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/jwoo92/vscode-COVID-19.git"
+	},
+	"engines": {
+		"vscode": "^1.43.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"activationEvents": [
+		"*"
+],
+	"main": "./src/extension.js",
+	"contributes": {
+		"configuration": {
+				"properties": {
+						"COVID-19.countries": {
+								"type": "array",
+								"default": [],
+								"description": "The list of countries to display in the status bar"
+						},
+						"COVID-19.displayGlobal": {
+							"type": "boolean",
+							"default": true,
+							"description": "Display global data in the status bar"
+					}
+				}
+		}
+},
+	"scripts": {
+		"lint": "eslint .",
+		"pretest": "npm run lint",
+		"test": "node ./test/runTest.js"
+	},
+	"devDependencies": {
+		"@types/glob": "^7.1.1",
+		"@types/mocha": "^7.0.1",
+		"@types/node": "^12.11.7",
+		"@types/vscode": "^1.43.0",
+		"eslint": "^6.8.0",
+		"glob": "^7.1.6",
+		"mocha": "^7.0.1",
+		"typescript": "^3.7.5",
+		"vscode-test": "^1.3.0"
+	}
+}
