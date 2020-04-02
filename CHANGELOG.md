@@ -1,4 +1,4 @@
-# Change Log
+# Changelog
 
 All notable changes to the "covid-19" extension will be documented in this file.
 

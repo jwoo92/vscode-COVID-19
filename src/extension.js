@@ -1,20 +1,19 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
-const vscode = require("vscode");
-const https = require("https");
-const countriesConfig = require("./countries");
+const vscode = require('vscode');
+const covid = require('novelcovid');
+const { countries: countriesConfig } = require('./config');
 
-const numberRegex = /\B(?=(\d{3})+(?!\d))/g;
+const countryRegex = /(^.+\()([A-Z]{2})\)/g;
+const numberRegex = /(\d)(?=(\d\d\d)+$)/;
+const stateRegex = /^\W+ {1}([a-z]+).+$/i;
+const stateCodeRegex = /^.+\(([A-Z]{2}).+$/i;
 
 class COVID19 {
   static arrayEq(arr1, arr2) {
-    return arr1.length !== arr2.length
-      ? false
-      : arr1.every((item, i) => item === arr2[i]);
+    return arr1.length !== arr2.length ? false : arr1.every((item, i) => item === arr2[i]);
   }
 
   static cleanup(items) {
-    items.forEach(item => {
+    items.forEach((item) => {
       item.hide();
       item.dispose();
     });
@@ -22,22 +21,11 @@ class COVID19 {
     return items;
   }
 
-  static createItem({
-    color,
-    key,
-    loading = false,
-    priority,
-    text = "",
-    tooltip,
-    useColors
-  }) {
-    const item = vscode.window.createStatusBarItem(
-      vscode.StatusBarAlignment.Right,
-      priority
-    );
+  static createItem({ color, key, loading = false, priority, text = '', tooltip }) {
+    const item = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, priority);
 
-    item.text = loading ? "..." : text;
-    if (useColors && color) item.color = color;
+    item.text = loading ? '...' : text;
+    if (color) item.color = color;
     if (tooltip) item.tooltip = `[${key}] ${tooltip}`;
 
     item.show();
@@ -45,57 +33,82 @@ class COVID19 {
     return item;
   }
 
-  static async fetchData(country) {
-    const isGlobal = country && country === "world";
-    const { latest, locations } = await COVID19.httpGet(
-      `https://coronavirus-tracker-api.herokuapp.com/v2/locations?source=jhu${
-        isGlobal ? "" : `&country_code=${country}`
-      }`
-    ).catch(error => {
-      throw new Error(`[${country}] Invalid response: ${error.message}`);
-    });
+  static async fetchData(tracker) {
+    if (tracker.indexOf('Global') > -1) return COVID19.getAll(tracker);
 
-    const lastUpdated = !isGlobal
-      ? locations[0].last_updated
-      : locations.reduce((a, b) =>
-          a.last_updated > b.last_updated ? a.last_updated : b.last_updated
-        );
+    const countryCode = tracker.replace(countryRegex, '$2');
+    if (countryCode.length === 2) return COVID19.getCountry(countryCode, tracker);
 
-    return {
-      active: latest.confirmed - latest.recovered - latest.deaths,
-      confirmed: latest.confirmed,
-      deaths: latest.deaths,
-      key: country,
-      lastUpdated: `Last updated: ${new Date(lastUpdated).toLocaleString()}`,
-      recovered: latest.recovered
-    };
+    return COVID19.getState(tracker.replace(stateRegex, '$1'), tracker);
   }
 
   static formatCount(number) {
-    return number.toString().replace(numberRegex, ",");
+    return number.toString().replace(numberRegex, '$1,');
   }
 
-  static httpGet(url) {
-    return new Promise((resolve, reject) => {
-      https.get(url, response => {
-        let responseData = "";
-        response.on("data", chunk => (responseData += chunk));
-        response.on("end", () => {
-          // Sometimes the 'error' event is not fired. Double check here.
-          if (response.statusCode === 200) {
-            resolve(JSON.parse(responseData));
-          } else {
-            reject("fail: " + response.statusCode);
-          }
-        });
-      });
-    });
+  static async getAll(id) {
+    const { updated, ...data } = await covid.getAll();
+
+    const response = Object.keys(data).reduce((props, key) => {
+      props[key] = COVID19.formatCount(data[key]);
+      return props;
+    }, {});
+
+    return {
+      ...response,
+      key: id,
+      emoji: '🌎',
+      name: 'Global',
+      updated: `Last updated: ${new Date(updated).toLocaleString()}`,
+    };
+  }
+
+  static async getCountry(countryCode, id) {
+    const data = await covid.getCountry({ country: countryCode });
+    const info = countriesConfig[countryCode];
+
+    return Object.keys(data).reduce(
+      (props, key) => {
+        const val = data[key];
+
+        if (key === 'updated') {
+          props[key] = `Last updated: ${new Date(val).toLocaleString()}`;
+          return props;
+        }
+
+        if (typeof val === 'number') props[key] = COVID19.formatCount(val);
+
+        return props;
+      },
+      { key: id, emoji: info.emoji, name: info.name },
+    );
+  }
+
+  static async getState(state, id) {
+    const data = await covid.getState({ state });
+
+    const response = Object.keys(data).reduce((props, key) => {
+      const val = data[key];
+
+      if (typeof val === 'number') props[key] = COVID19.formatCount(val);
+
+      return props;
+    }, {});
+
+    return {
+      ...response,
+      key: id,
+      emoji: `🇺🇸(${id.replace(stateCodeRegex, '$1')})`,
+      name: state,
+      recovered: COVID19.formatCount(data.cases - data.active - data.deaths),
+      updated: `Last updated: ${new Date().toLocaleString()}`,
+    };
   }
 
   constructor() {
     this.state = {
       refreshRate: 60000,
-      items: new Map()
+      items: new Map(),
     };
 
     this.activate = this.activate.bind(this);
@@ -106,64 +119,50 @@ class COVID19 {
     this.refreshStats = this.refreshStats.bind(this);
   }
 
-  activate(context) {
+  async activate(context) {
     this.refresh();
-
     setInterval(this.refresh, this.state.refreshRate);
-
-    context.subscriptions.push(
-      vscode.workspace.onDidChangeConfiguration(this.refresh)
-    );
+    context.subscriptions.push(vscode.workspace.onDidChangeConfiguration(this.refresh));
   }
 
   deactivate() {}
 
-  fillEmpty(countries) {
+  fillEmpty(items) {
     this.state.items = new Map();
     let priority = 100;
 
-    countries.forEach(key => {
-      priority++;
-
-      return this.state.items.set(
-        key,
-        COVID19.createItem({ text: key, priority, loading: true })
-      );
+    items.forEach((key) => {
+      priority += 1;
+      return this.state.items.set(key, COVID19.createItem({ text: key, priority, loading: true }));
     });
   }
 
   refresh() {
     const config = vscode.workspace.getConfiguration();
-    const displayGlobal = config.get("COVID-19.displayGlobal");
-    const configuredCountries = config
-      .get("COVID-19.countries", [])
-      .map(country => country.toUpperCase())
+    const trackers = [
+      config.get('FirstTracker'),
+      config.get('SecondTracker'),
+      config.get('ThirdTracker'),
+    ]
+      .filter((tracker, i, self) => tracker !== 'Disabled' && self.indexOf(tracker) === i)
       .reverse();
 
-    // check if should include overall stats
-    if (displayGlobal) configuredCountries.push("world");
-
-    if (!COVID19.arrayEq(configuredCountries, [...this.state.items.keys()])) {
+    if (!COVID19.arrayEq(trackers, [...this.state.items.keys()])) {
       this.state.items = COVID19.cleanup(this.state.items);
-      this.fillEmpty(configuredCountries);
+      this.fillEmpty(trackers);
     }
 
-    this.refreshStats(configuredCountries);
+    this.refreshStats(trackers);
   }
 
   refreshData(data) {
-    const { formatCount } = COVID19;
-    const active = formatCount(data.active);
-    const confirmed = formatCount(data.confirmed);
-    const deaths = formatCount(data.deaths);
-    const recovered = formatCount(data.recovered);
-    const item = this.state.items.get(data.key);
-    const info = countriesConfig[data.key];
+    const { cases: confirmed, active, deaths, recovered, emoji, name, key } = data;
+    const item = this.state.items.get(key);
 
-    item.text = `${info.emoji} ~${active} ✓${recovered} ✗${deaths}`;
+    item.text = `${emoji} ~${active} ✓${recovered} ✗${deaths}`;
     item.tooltip = `COVID-19 Tracker
 
-${info.name}
+${name}
 
 Confirmed cases: ${confirmed}
 
@@ -171,24 +170,15 @@ Confirmed cases: ${confirmed}
 ✓ = Recovered
 ✗ = Deaths
 
-${data.lastUpdated}`;
+${data.updated}`;
   }
 
-  async refreshStats(countries) {
-    if (!countries.length) {
-      return;
-    }
+  async refreshStats(trackers) {
+    if (!trackers.length) return;
 
-    const promises = countries.map(country => COVID19.fetchData(country));
-
-    const res = await Promise.all(promises);
+    const res = await Promise.all(trackers.map(COVID19.fetchData));
     res.forEach(this.refreshData);
   }
 }
 
-const { activate, deactivate } = new COVID19();
-
-module.exports = {
-  activate,
-  deactivate
-};
+module.exports = COVID19;
