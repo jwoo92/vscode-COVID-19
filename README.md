@@ -10,8 +10,7 @@
   <a href="https://marketplace.visualstudio.com/items?itemName=Woodward-Labs.covid-19">
     <img src="https://vsmarketplacebadge.apphb.com/version/Woodward-Labs.covid-19.svg" alt="Marketplace Badge">
   <a href="https://marketplace.visualstudio.com/items?itemName=Woodward-Labs.covid-19">
-  <img src="https://vsmarketplacebadge.apphb.com/downloads/Woodward-Labs.covid-19.svg
-" alt="Marketplace downloads">
+  <img src="https://vsmarketplacebadge.apphb.com/downloads/Woodward-Labs.covid-19.svg" alt="Marketplace downloads">
   </a>
   <a href="https://marketplace.visualstudio.com/items?itemName=Woodward-Labs.covid-19&ssr=false#review-details">
   <img src="https://vsmarketplacebadge.apphb.com/rating/Woodward-Labs.covid-19.svg" alt="Marketplace Rating">
