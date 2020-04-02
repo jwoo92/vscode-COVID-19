@@ -8,9 +8,10 @@
 <h4 align="center">Keeping you informed without getting in the way</h4>
 <p align="center">
   <a href="https://marketplace.visualstudio.com/items?itemName=Woodward-Labs.covid-19">
-    <img src="https://vsmarketplacebadge.apphb.com/version/Woodward-Labs.covid-19.svg?label=Visual%20Studio%20Marketplace" alt="Marketplace Badge">
+    <img src="https://vsmarketplacebadge.apphb.com/version/Woodward-Labs.covid-19.svg" alt="Marketplace Badge">
   <a href="https://marketplace.visualstudio.com/items?itemName=Woodward-Labs.covid-19">
-  <img src="https://vsmarketplacebadge.apphb.com/installs/Woodward-Labs.covid-19.svg" alt="Marketplace installs">
+  <img src="https://vsmarketplacebadge.apphb.com/downloads/Woodward-Labs.covid-19.svg
+" alt="Marketplace downloads">
   </a>
   <a href="https://marketplace.visualstudio.com/items?itemName=Woodward-Labs.covid-19&ssr=false#review-details">
   <img src="https://vsmarketplacebadge.apphb.com/rating/Woodward-Labs.covid-19.svg" alt="Marketplace Rating">
