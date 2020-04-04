@@ -4,7 +4,7 @@ const { countries: countriesConfig } = require('./config');
 
 const countryRegex = /(^.+\()([A-Z]{2})\)/g;
 const numberRegex = /(\d)(?=(\d\d\d)+$)/;
-const stateRegex = /^\W+ {1}([a-z]+).+$/i;
+const stateRegex = /^\W+ {1}([a-z ]+).+$/i;
 const stateCodeRegex = /^.+\(([A-Z]{2}).+$/i;
 
 class COVID19 {
