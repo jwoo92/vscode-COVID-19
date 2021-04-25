@@ -1,3 +1,9 @@
+# Unmaintained at this time (will remove upon status change)
+
+There appears to be a couple spots in the code that need to be addressed to have this up and going again (mostly around API and data consumption of such). Feel free to open a pull-request if interested in contributing to this. Otherwise, this banner will remain until resolved. 
+
+---
+
 <h1 align="center">
   <br>
     <img src="https://github.com/jwoo92/vscode-COVID-19/blob/master/assets/logo.png?raw=true" alt="logo" width="200">
@@ -38,115 +44,9 @@ Select which areas you want to track in the dropdowns and that's it. Hover over 
 
 ## Available Countries & Regions
 
-🌎 Global
-
-🇺🇸 United States
-
-🇺🇸 Alabama, United States
-
-🇺🇸 Alaska, United States
-
-🇺🇸 Arizona, United States
-
-🇺🇸 Arkansas, United States
-
-🇺🇸 California, United States
-
-🇺🇸 Colorado, United States
-
-🇺🇸 Connecticut, United States
-
-🇺🇸 Delaware, United States
-
-🇺🇸 Florida, United States
-
-🇺🇸 Georgia, United States
-
-🇺🇸 Hawaii, United States
-
-🇺🇸 Idaho, United States
-
-🇺🇸 Illinois, United States
-
-🇺🇸 Indiana, United States
-
-🇺🇸 Iowa, United States
-
-🇺🇸 Kansas, United States
-
-🇺🇸 Kentucky, United States
-
-🇺🇸 Louisiana, United States
-
-🇺🇸 Maine, United States
-
-🇺🇸 Maryland, United States
-
-🇺🇸 Massachusetts, United States
-
-🇺🇸 Michigan, United States
-
-🇺🇸 Minnesota, United States
-
-🇺🇸 Mississippi, United States
-
-🇺🇸 Missouri, United States
-
-🇺🇸 Montana, United States
-
-🇺🇸 Nebraska, United States
-
-🇺🇸 Nevada, United States
-
-🇺🇸 New hampshire, United States
-
-🇺🇸 New Jersey, United States
-
-🇺🇸 New Mexico, United States
-
-🇺🇸 New York, United States
-
-🇺🇸 North Carolina, United States
-
-🇺🇸 North Dakota, United States
-
-🇺🇸 Ohio, United States
-
-🇺🇸 Oklahoma, United States
-
-🇺🇸 Oregon, United States
-
-🇺🇸 Pennsylvania, United States
-
-🇺🇸 Rhode Island, United States
-
-🇺🇸 South Carolina, United States
-
-🇺🇸 South Dakota, United States
-
-🇺🇸 Tennessee, United States
-
-🇺🇸 Texas, United States
-
-🇺🇸 Utah, United States
-
-🇺🇸 Vermont, United States
-
-🇺🇸 Virginia, United States
-
-🇺🇸 Washington, United States
-
-🇺🇸 West Virginia, United States
-
-🇺🇸 Wisconsin, United States
-
-🇺🇸 Wyoming, United States
-
-🇺🇸 District Of Columbia
-
-🇺🇸 Puerto Rico
-
-🇺🇸 Virgin Islands
+<details>
+  <summary>🌎 Global</summary>
+<br/>
 
 🇦🇩 Andorra
 
@@ -481,6 +381,120 @@ Select which areas you want to track in the dropdowns and that's it. Hover over 
 🇿🇲 Zambia
 
 🇿🇼 Zimbabwe
+
+</details>
+
+<details>
+  <summary>🇺🇸 United States + related regions</summary>
+<br/>
+
+🇺🇸 Alabama, United States
+
+🇺🇸 Alaska, United States
+
+🇺🇸 Arizona, United States
+
+🇺🇸 Arkansas, United States
+
+🇺🇸 California, United States
+
+🇺🇸 Colorado, United States
+
+🇺🇸 Connecticut, United States
+
+🇺🇸 Delaware, United States
+
+🇺🇸 Florida, United States
+
+🇺🇸 Georgia, United States
+
+🇺🇸 Hawaii, United States
+
+🇺🇸 Idaho, United States
+
+🇺🇸 Illinois, United States
+
+🇺🇸 Indiana, United States
+
+🇺🇸 Iowa, United States
+
+🇺🇸 Kansas, United States
+
+🇺🇸 Kentucky, United States
+
+🇺🇸 Louisiana, United States
+
+🇺🇸 Maine, United States
+
+🇺🇸 Maryland, United States
+
+🇺🇸 Massachusetts, United States
+
+🇺🇸 Michigan, United States
+
+🇺🇸 Minnesota, United States
+
+🇺🇸 Mississippi, United States
+
+🇺🇸 Missouri, United States
+
+🇺🇸 Montana, United States
+
+🇺🇸 Nebraska, United States
+
+🇺🇸 Nevada, United States
+
+🇺🇸 New hampshire, United States
+
+🇺🇸 New Jersey, United States
+
+🇺🇸 New Mexico, United States
+
+🇺🇸 New York, United States
+
+🇺🇸 North Carolina, United States
+
+🇺🇸 North Dakota, United States
+
+🇺🇸 Ohio, United States
+
+🇺🇸 Oklahoma, United States
+
+🇺🇸 Oregon, United States
+
+🇺🇸 Pennsylvania, United States
+
+🇺🇸 Rhode Island, United States
+
+🇺🇸 South Carolina, United States
+
+🇺🇸 South Dakota, United States
+
+🇺🇸 Tennessee, United States
+
+🇺🇸 Texas, United States
+
+🇺🇸 Utah, United States
+
+🇺🇸 Vermont, United States
+
+🇺🇸 Virginia, United States
+
+🇺🇸 Washington, United States
+
+🇺🇸 West Virginia, United States
+
+🇺🇸 Wisconsin, United States
+
+🇺🇸 Wyoming, United States
+
+🇺🇸 District Of Columbia (Washington, D.C.)
+
+🇺🇸 Puerto Rico
+
+🇺🇸 Virgin Islands
+
+</details>
 
 ## Troubleshooting
 
